@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webseite</title>
+</head>
+<body>
+<h1>Nachricht an den Server senden</h1>
+<input type="text" id="message" autofocus>
+<label for="message">Deine Nachricht</label>
+<button id="sendMessage">Nachricht senden</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var websocket = new WebSocket('ws://localhost:3001');
+
+    websocket.onerror = function(error) {
+        console.log(`[error] Connection failed: ${error.message}`);
+        // Seite neu laden, aber mit einer Verzögerung von 30 Sekunden
+        setTimeout(function() {
+            location.reload();
+        }, 3000); // 3000 Millisekunden = 3 Sekunden
+    };
+
+    $(document).ready(function(){
+        $("#sendMessage").click(function(){
+            let message = $('#message').val();
+
+            websocket.send(JSON.stringify({
+                message: message,
+                source: "Marius"
+            }));
+
+            $('#message').val("");
+        });
+    });
+</script>
+</body>
+</html>

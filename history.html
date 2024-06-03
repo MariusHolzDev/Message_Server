@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message History</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Message History</h1>
+<ul id="message-list">
+</ul>
+
+<script>
+    var websocket = new WebSocket('ws://localhost:3001');
+
+    websocket.onmessage = function(event) {
+        var message = JSON.parse(event.data);
+
+        if (message.source && message.message) {
+            $("#message-list").append("<li>" + message.source + ": " + message.message + "</li>");
+        }
+    };
+</script>
+</body>
+</html>
